@@ -12,8 +12,8 @@ import cv2
 from scipy import ndimage as ndi
 from PIL import ImageEnhance,Image
 from matplotlib import cm
-#rootpath = 'E:\\OneDrive - Chiang Mai University\\CoLab_KhaiMai\\TrainImg\\'
-rootpath = 'TrainImg\\'
+rootpath = 'E:\\OneDrive - Chiang Mai University\\CoLab_KhaiMai\\TrainImg\\'
+#rootpath = 'TrainImg\\'
 
 def X_normalize(X):
     X_norm = X.astype('float16')/255.0
@@ -101,7 +101,7 @@ class DFLSheet:
         else:
             RGBImg =  resize(Img, (int(Img.shape[0]*self.scale),int(Img.shape[1]*self.scale)))
             self.RGBImg = Img_normalize(RGBImg.copy())
-            io.imsave('Result_img\\img_' +dflname +'.jpg',self.RGBImg)
+            #io.imsave('Result_img\\img_' +dflname +'.jpg',self.RGBImg)
         
         ####################################
         #self.lim_high = 1500
@@ -116,7 +116,7 @@ class DFLSheet:
         
         if self.hsv == 1:
             self.RGBImg = color.rgb2hsv(self.RGBImg.copy())
-            io.imsave('Result_img\\hsv3_' +dflname +'.jpg',Img_normalize3(self.RGBImg.copy()))
+            #io.imsave('Result_img\\hsv3_' +dflname +'.jpg',Img_normalize3(self.RGBImg.copy()))
             self.RGBImg = Img_normalize(self.RGBImg.copy())
         else:
             self.RGBImg = Img_normalize(self.RGBImg.copy())
@@ -125,8 +125,8 @@ class DFLSheet:
             self.RGBImg_max = ndi.maximum_filter(self.RGBImg, size= 500, mode='constant')
             self.RGBImg_min = ndi.minimum_filter(self.RGBImg, size= 500, mode='constant')
             #self.RGBImg = Img_normalize2(self.RGBImg.copy(),self.RGBImg_min,self.RGBImg_max)
-            io.imsave('Result_img\\max_' +dflname +'.jpg',SubImg_normalize(self.RGBImg_max.copy()))
-            io.imsave('Result_img\\norm_' +dflname +'.jpg',SubImg_normalize(self.RGBImg.copy()))
+            #io.imsave('Result_img\\max_' +dflname +'.jpg',SubImg_normalize(self.RGBImg_max.copy()))
+            #io.imsave('Result_img\\norm_' +dflname +'.jpg',SubImg_normalize(self.RGBImg.copy()))
             
        
         self.pointPath = rootpath + dflpath + dflname +'\\'
