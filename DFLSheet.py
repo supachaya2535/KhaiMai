@@ -15,9 +15,14 @@ from matplotlib import cm
 rootpath = 'E:\\OneDrive - Chiang Mai University\\CoLab_KhaiMai\\TrainImg\\'
 #rootpath = 'TrainImg\\'
 
-def X_normalize(X):
-    X_norm = X.astype('float16')/255.0
-    #X_norm = X.astype('float16')
+def X_normalize(image):
+    image = image.astype('float')
+    # Normalize images for better comparison.
+    #image = (image - image.mean()) / image.std()
+    #return np.sqrt(np.real(image)**2 +
+      #             np.imag(image)**2)
+    
+    X_norm = image.astype('float16')/255.0
     return X_norm
 
 def SubImg_normalize(X):
@@ -42,9 +47,11 @@ def Img_normalize(X):
     X_norm = (255.0*X_norm).astype('uint8')
     return X_norm
 
-def Img_normalize2(X,Min,Max):
+def Img_normalize_hsv(X):
     X_norm = X.astype('float16')
-    X_norm = ((X_norm - Min)/(Max-Min))
+    #X_norm[0] = X_norm[0]*360
+    #X_norm[1] = X_norm[1]*100
+    #X_norm[2] = X_norm[2]*100
     X_norm = (255.0*X_norm).astype('uint8')
     return X_norm
 
@@ -100,7 +107,7 @@ class DFLSheet:
             self.RGBImg = Img
         else:
             RGBImg =  resize(Img, (int(Img.shape[0]*self.scale),int(Img.shape[1]*self.scale)))
-            self.RGBImg = Img_normalize(RGBImg.copy())
+            self.RGBImg = Img_normalize_hsv(RGBImg.copy())
             #io.imsave('Result_img\\img_' +dflname +'.jpg',self.RGBImg)
         
         ####################################
@@ -117,7 +124,7 @@ class DFLSheet:
         if self.hsv == 1:
             self.RGBImg = color.rgb2hsv(self.RGBImg.copy())
             #io.imsave('Result_img\\hsv3_' +dflname +'.jpg',Img_normalize3(self.RGBImg.copy()))
-            self.RGBImg = Img_normalize(self.RGBImg.copy())
+            self.RGBImg = Img_normalize_hsv(self.RGBImg.copy())
         else:
             self.RGBImg = Img_normalize(self.RGBImg.copy())
         
@@ -369,8 +376,8 @@ class DFLSheetDataSet:
             print("Shell egg sheets are loaded")
             self.nclass = 4
             self.rootpath = 'S\\'
-            self.dflsheet_train = ['S23a','S36s','S4','S33s','CM_S1','SB_S1']#'A1','S2',
-            #self.dflsheet_train = ['S23a','S36s','S4','S33s']
+            #self.dflsheet_train = ['S23a','S36s','S4']#'A1','S2',
+            self.dflsheet_train = ['S23a','S36s','S4','S33s']
             self.egg_type = ['background','shell','unfer','dead']
             self.dflsheet_blind = ['S5','S6','S8','S9','S10','S11p','S12',
                                    'S13p','S14a','S15a','S16a','S17a','S18a',

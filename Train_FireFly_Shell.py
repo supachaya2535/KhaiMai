@@ -23,14 +23,16 @@ if __name__ == '__main__':
                 'kfold': 4,
                 'period': 'shell'}
     
-    fa_option = {'beta': 0.1,'gamma':0.01,'alpha0':0.01,'alpha1':0.0000001,
-                'alpha_damp':0.5, 'norm0':0.000000001, 'norm1':1}
+    fa_option = {'beta': 0.1,'gamma':0.1,'alpha0':0.1,'alpha1':0.0000001,
+                'alpha_damp':0.5, 'norm0':0.0001, 'norm1':1}
     
     if nn_option['period'] == 'fresh':
         nn_option['hsv'] = 1
         nn_option['nclass'] = 2
         nn_option['epochs'] = 90
         nn_option['batch_size'] = 2
+        nn_option['list_train'] = ['F4','F12','F16']
+    
         nn_option['list_dfl'] = ['F12','F16',
                                  'F4','F5','F6','F13','F14','F15']#'F1',
         nn_option['path_dfl'] = 'F\\'
@@ -41,23 +43,27 @@ if __name__ == '__main__':
         nn_option['nclass'] = 3
         nn_option['epochs'] = 90
         nn_option['batch_size'] = 3
+        nn_option['list_train'] = ['A4','F7s','F10s']
+    
         nn_option['list_dfl'] = ['A4','F7s','F10s',
                                  'F3p','F8s','F9s','F11s']
         nn_option['path_dfl'] = 'A\\'
         nn_option['best_thr'] = [0.,0.5,0.5]
         
     elif nn_option['period'] == 'shell':
-        nn_option['hsv'] = 0
+        nn_option['hsv'] = 1
         nn_option['nclass'] = 4
-        nn_option['epochs'] = 150
-        nn_option['batch_size'] = 3
+        nn_option['epochs'] = 90
+        nn_option['batch_size'] = 2
+        nn_option['list_train'] = ['S23a','S36s','S4','S33s','SB_S1']
+    
         """
         nn_option['list_dfl'] = ['S2','S5','S6','S8','S9','S10','S11p','S12',
                                  'S13p','S14a','S15a','S16a','S17a','S18a',
                                  'S19a','S20a','S21a','S22a','S24a','S25a',
                                  'S26a','S27a','S28a','S29a','S30a','S31p','S35s']
         """
-        nn_option['list_dfl'] = ['CM_S1','SB_S1','SB_S2','SB_S3','SB_S4']
+        nn_option['list_dfl'] = ['S23a','S36s','S4','S33s','SB_S1','SB_S6']
         nn_option['path_dfl'] = 'S\\'
         nn_option['best_thr'] = [0.,0.5,0.5,0.5]
     
@@ -65,8 +71,8 @@ if __name__ == '__main__':
     dimension = nn_option['window_size']*nn_option['window_size']*nn_option['channels']
     lower_b=-np.inf
     upper_b= np.inf
-    max_iter = 15
-    npop = 4
+    max_iter = 20
+    npop = 10
     
     ############################################################################
     input_dim = nn_option['window_size']*nn_option['window_size']*3
@@ -163,7 +169,8 @@ if __name__ == '__main__':
                #countnn['position'].predict_class(path_dfl,dfl,scaler,nn_option)
             nn_option['display'] = 0
             #if f ==1 :
-                #countR = test_on_DFL_Train(scaler,nn_option,countnn)
+            countR = test_on_DFL_Train(scaler,nn_option,countnn)
+            countR = test_on_DFL_Test(scaler,nn_option,countnn)
             
             
         write_continue_fa_file(nn_option['dataname'] +'/result_count_train_fa.csv',header,count_train_fa)
